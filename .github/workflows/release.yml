@@ -14,5 +14,5 @@ jobs:
       - name: Promote artifacts
         run: |
           jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.JFROG_ENCRYPTED_PASSWORD }}
-          passedBuildNumber=`jfrog rt s "*.jar" --server-id=my-jfrog-server --props="qa=ok" | jq -r '.[].props."build.number"[]'`
-          jfrog rt bpr handson-build $passedBuildNumber handson-gradle-staging --server-id=my-jfrog-server
+#          passedBuildNumber=`jfrog rt s "*.jar" --server-id=my-jfrog-server --props="qa=ok" | jq -r '.[].props."build.number"[]'`
+          # TODO 次の環境 (ここではステージング) のリポジトリにアーティファクトをプロモートする
