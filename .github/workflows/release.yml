@@ -14,5 +14,5 @@ jobs:
       - name: Push artifacts to JFrog
         run: |
           jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.ENCRYPTED_PASSWORD }}
-          jfrog rt s "handson*"
-#          jfrog rt bpr handson-build --props "qa=ok" staging
+          passedBuildNumber=`jfrog rt s "*.jar" --server-id=my-jfrog-server --props="qa=ok" | jq -r '.[].props."build.number"[]'`
+          jfrog rt bpr handson-build $passedBuildNumber staging --server-id=my-jfrog-server

@@ -19,18 +19,13 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
-      with:
-        arguments: build
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.JFROG_URL }}/handson-docker/handson-image:latest
-
-    - uses: jfrog/setup-jfrog-cli@v2
-    - name: Push artifacts to JFrog
+    - name: Set up JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v2
+    - name: Build the Gradle Application
       run: |
         jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.ENCRYPTED_PASSWORD }}
-        jfrog rt dp ${{ secrets.JFROG_URL }}/handson-docker/handson-image:latest handson-docker --build-name=handson-build --build-number=${{ env.JFROG_CLI_BUILD_NUMBER }} --server-id=my-jfrog-server
+        jfrog rt gradle-config --server-id-resolve=my-jfrog-server --server-id-deploy=my-jfrog-server --repo-resolve=handson-gradle --repo-deploy=handson-gradle --use-wrapper=true
+        jfrog rt gradle clean test artifactoryPublish -b build.gradle --build-name=handson-build --build-number=${{ env.JFROG_CLI_BUILD_NUMBER }}
         jfrog rt bce handson-build ${{ env.JFROG_CLI_BUILD_NUMBER }}
         jfrog rt bp handson-build ${{ env.JFROG_CLI_BUILD_NUMBER }}
     - name: Scan artifacts
