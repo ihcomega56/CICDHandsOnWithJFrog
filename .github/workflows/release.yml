@@ -1,0 +1,18 @@
+name: Release
+
+on:
+  workflow_dispatch
+
+jobs:
+
+  promote:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: jfrog/setup-jfrog-cli@v2
+      - name: Push artifacts to JFrog
+        run: |
+          jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.ENCRYPTED_PASSWORD }}
+          jfrog rt s "handson*"
+#          jfrog rt bpr handson-build --props "qa=ok" staging
