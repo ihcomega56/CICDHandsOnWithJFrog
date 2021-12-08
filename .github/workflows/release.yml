@@ -1,4 +1,4 @@
-name: Release
+name: Promote
 
 on:
   workflow_dispatch
@@ -11,8 +11,8 @@ jobs:
 
     steps:
       - uses: jfrog/setup-jfrog-cli@v2
-      - name: Push artifacts to JFrog
+      - name: Promote artifacts
         run: |
           jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.JFROG_ENCRYPTED_PASSWORD }}
           passedBuildNumber=`jfrog rt s "*.jar" --server-id=my-jfrog-server --props="qa=ok" | jq -r '.[].props."build.number"[]'`
-          jfrog rt bpr handson-build $passedBuildNumber staging --server-id=my-jfrog-server
+          jfrog rt bpr handson-build $passedBuildNumber handson-gradle-staging --server-id=my-jfrog-server

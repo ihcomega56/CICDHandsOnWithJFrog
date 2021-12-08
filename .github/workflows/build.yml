@@ -21,7 +21,7 @@ jobs:
 
     - name: Set up JFrog CLI
       uses: jfrog/setup-jfrog-cli@v2
-    - name: Build the Gradle Application
+    - name: Build and publish the Gradle application
       run: |
         jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.JFROG_ENCRYPTED_PASSWORD }}
         jfrog rt gradle-config --server-id-resolve=my-jfrog-server --server-id-deploy=my-jfrog-server --repo-resolve=handson-gradle --repo-deploy=handson-gradle --use-wrapper=true
