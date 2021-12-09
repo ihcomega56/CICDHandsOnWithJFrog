@@ -34,3 +34,5 @@ jobs:
         jfrog rt bp handson-build ${{ env.JFROG_CLI_BUILD_NUMBER }}
 
     # TODO: 脆弱性のスキャンを行う
+    - name: Scan artifacts
+      run: jfrog rt bs handson-build ${{ env.JFROG_CLI_BUILD_NUMBER }}
