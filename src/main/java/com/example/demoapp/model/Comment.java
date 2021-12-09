@@ -16,10 +16,7 @@ public class Comment {
      * @return 元の発言
      */
     public String echo() {
-        // TODO: テストが通るようコードを修正する
-        return "勝手な発言";
-        // ↑の1行を以下のコードに置き換えればOK
-        // return text;
+        return text;
     }
 
     /**
