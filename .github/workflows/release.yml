@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - uses: jfrog/setup-jfrog-cli@v2
+      # 次の環境 (ここではステージング) のリポジトリにアーティファクトをプロモートする
       - name: Promote artifacts
         run: |
           jfrog c add my-jfrog-server --url=https://${{ secrets.JFROG_URL }}/ --user=${{ secrets.JFROG_USER }} --password=${{ secrets.JFROG_ENCRYPTED_PASSWORD }}
